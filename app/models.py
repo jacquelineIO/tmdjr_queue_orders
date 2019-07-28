@@ -2,7 +2,7 @@ from app import db
 from datetime import date, datetime, time
 from pytz import timezone
 
-# TODO implement clear database
+# clear database
 def clear_orders_table():
     try:
         num_rows_deleted = db.session.query(Order).delete()

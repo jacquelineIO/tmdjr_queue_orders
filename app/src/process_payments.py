@@ -4,8 +4,8 @@ from app.models import Order, OrderItem
 
 def process_payments_response(payments_response):
     for payment in payments_response:
-        print("for payment in payments_response")
-        print(payment)
+        #print("for payment in payments_response")
+        #print(payment)
         order = Order()
         order_items = []
         fmt = "%Y-%m-%dT%H:%M:%SZ"
