@@ -1,0 +1,12 @@
+
+# all 3 below are serialized with pickejson and dumped to file with json
+# these are dumpes of real data and are not being stored in GitHub, will
+# have to get and add to data directory separately
+    file_name = 'text_jul25.dump' # 9 orders
+    file_name = 'text_jul27.dump' # 2 orders
+    file_name = 'text_jul26.dump' # 17 orders
+
+# copy of output to screen from 1 response
+# the payment, device, and transaction IDs have been redacted
+	payment_response_complex_1.txt
+	payment_response_simple_1.txt

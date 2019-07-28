@@ -1,0 +1,43 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>Welcome to TMD Jr Orders</title>
+        {% endif %}
+    </head>
+    <body>
+        <h1>That's My Dog Jr Orders</h1>
+
+<br><br>
+Active Order #{{ active_order.order_id }}
+<table>
+        {% for item in active_order.itemizations %}
+ <tr>
+  <td>{{ item.name }}{% for mod in active_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
+  <td>Qty:{{ item.quantity }}</td>
+ </tr>
+        {% endfor %}
+</table>
+
+<br><br>
+Preview Order #{{ preview_order.order_id }}
+<table>
+        {% for item in preview_order.itemizations %}
+ <tr>
+  <td>{{ item.name }}{% for mod in preview_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
+  <td>Qty:{{ item.quantity }}</td>
+ </tr>
+        {% endfor %}
+</table>
+
+<br><br>
+Next Queue ({{ next_queue|length }})
+<ul>
+{% for next in next_queue %}
+<li>{{ next }}</li>
+{% endfor  %}
+</ul>
+
+    </body>
+</html>
