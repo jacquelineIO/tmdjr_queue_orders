@@ -16,5 +16,3 @@ def get_squareapi_transaction_api():
 
 def get_location():
     return app.config['TMDJR_LOCATION']
-
-
