@@ -1,8 +1,8 @@
-from flask import render_template
+from flask import render_template, redirect, url_for
 from app import app
 from app.src.query_payments import get_list_payments
 from app.src.process_payments import process_payments_response
-from app.src.get_orders import get_orders
+from app.src.orders import get_orders, complete_order
 
 
 @app.route('/')
@@ -31,3 +31,7 @@ def index():
     
     return render_template('index.html', title='Home', active_order=active_order, preview_order=preview_order, next_queue=next_queue)
 
+@app.route("/complete/<payment_id>/<part_num>")
+def complete(payment_id, part_num):
+    complete_order(payment_id, part_num)
+    return redirect(url_for('index'))

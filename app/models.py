@@ -55,7 +55,7 @@ class Order(db.Model):
             )
 
     def __repr__(self):
-        return '<Order {}>'.format(self.order_id)
+        return '<Order {}, payment_id {}, part_num {}>'.format(self.order_id, self.payment_id, self.part)
 
 class LastRun(db.Model):
     id = db.Column(db.Integer, primary_key=True)
