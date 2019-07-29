@@ -8,36 +8,113 @@
     </head>
     <body>
         <h1>That's My Dog Jr Orders</h1>
-
 <br><br>
-Active Order #{{ active_order.order_id }}
-<table>
-        {% for item in active_order.itemizations %}
- <tr>
-  <td>{{ item.name }}{% for mod in active_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
-  <td>Qty:{{ item.quantity }}</td>
- </tr>
-        {% endfor %}
-</table>
-
-<br><br>
-Preview Order #{{ preview_order.order_id }}
-<table>
-        {% for item in preview_order.itemizations %}
- <tr>
-  <td>{{ item.name }}{% for mod in preview_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
-  <td>Qty:{{ item.quantity }}</td>
- </tr>
-        {% endfor %}
-</table>
-
-<br><br>
-Next Queue ({{ next_queue|length }})
-<ul>
+<div class="container">
+<div class="row">
+  <div class="col-3">
+<ul class="list-group">
+  <li class="list-group-item"><h2><b>Next Queue ({{ next_queue|length }})</b></h2></li>
+  <ul>
 {% for next in next_queue %}
-<li>{{ next }}</li>
+<li class="list-group-item">{{ next }}</li>
 {% endfor  %}
 </ul>
+</ul>
+</div>
+<div class="col">
+    <h2>Active</h2>
+    <h3>Order #{{ active_order.order_id }}</h3>
+<!--     <p><b>Part 1/1</b></p> -->
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Qty</th>
+    </tr>
+  </thead>
+  <tbody>
+     {% for item in active_order.itemizations %}
+    <tr>
+      <td>{{ item.name }}<p><b>{% for mod in active_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</b></p>
+</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+</table>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+    <h3>Timer</h3>
+      <p><span id="minutes"></span>:<span id="seconds"></span></p>
 
+    <button class="button" id="completeBtn">Complete</button>
+  </div>
+</div>
+<div class="col">
+    <h2>Preview</h2>
+    <h3>Order #{{ preview_order.order_id }}</h3>
+<!--     <p><b>Part 1/1</b></p> -->
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Qty</th>
+    </tr>
+  </thead>
+  <tbody>
+     {% for item in active_order.itemizations %}
+    <tr>
+      <td>{{ item.name }}<p><b>{% for mod in active_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</b></p>
+</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+</table>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+    <h3>Timer</h3>
+      <p><span id="minutes"></span>:<span id="seconds"></span></p>
+
+    <button class="button" id="completeBtn">Complete</button>
+        <script>
+            var minutesLabel = document.getElementById("minutes");
+        var secondsLabel = document.getElementById("seconds");
+        var totalSeconds = 0;
+
+var timer = setInterval(setTime, 1000);
+
+        function setTime()
+        {
+            ++totalSeconds;
+            secondsLabel.innerHTML = pad(totalSeconds%60);
+            minutesLabel.innerHTML = pad(parseInt(totalSeconds/60));
+           
+        }
+
+        function pad(val)
+        {
+            var valString = val + "";
+            if(valString.length < 2)
+            {
+                return "0" + valString;
+            }
+            else
+            {
+                return valString;
+            }
+        }
+
+var completeBtn = document.getElementById("completeBtn");
+
+completeBtn.onclick = function () {
+  clearInterval(timer);
+  totalSeconds = 0
+  setInterval(setTime, 1000);
+};
+        </script>
+            
+  </div>
+</div>
     </body>
 </html>
