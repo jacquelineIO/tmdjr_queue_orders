@@ -31,7 +31,7 @@ def index():
     
     return render_template('index.html', title='Home', active_order=active_order, preview_order=preview_order, next_queue=next_queue)
 
-@app.route("/complete/<payment_id>/<part_num>")
+@app.route("/complete/<payment_id>/<part_num>/")
 def complete(payment_id, part_num):
     complete_order(payment_id, part_num)
     return redirect(url_for('index'))

@@ -11,13 +11,17 @@ def clear_orders_table():
     except:
         db.session.rollback()
 
-def run_today_central(last_run, today_central):
+def has_run_today_central(last_run, today_central):
     last_run_central = last_run.astimezone(timezone('UTC'))
  
     if last_run_central.year == today_central.year and last_run_utc.month == today_central.month and last_run_central.day == today_central.day:
             return true
     else:
-        if last_run_central.day < today_cental.day:
+        if last_run_central.year < today_central.year:
+            clear_orders_table()
+        elif last_run_central.year == today_central.year and last_run_central.month < today_central.month:
+            clear_orders_table()
+        elif last_run_central.year == today_central.year and last_run_central.month == today_central.month and last_run_central.day < today_cental.day:
             clear_orders_table()
         return false
 
@@ -99,7 +103,7 @@ class LastRun(db.Model):
         last_run_utc = self.query.all()
         if len(last_run_utc) == 0:
             return today_utc
-        elif run_today_central(last_run_utc, today_central): 
+        elif has_run_today_central(last_run_utc, today_central):
             return last_run_utc[0].last_run
         else:
             return today_utc

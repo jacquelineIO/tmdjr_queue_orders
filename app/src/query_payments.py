@@ -1,4 +1,4 @@
-from app import app 
+from app import app, db
 from app.models import LastRun, clear_orders_table
 from app.queue_orders import get_squareapi_transaction_api, get_location
 from app.src.test_data import load_test_data
@@ -14,16 +14,21 @@ def get_list_payments():
         return get_list_payments_test_data()
 
 def get_list_payments_square_api():
+    api = get_squareapi_transaction_api()
+    location = get_location()
+
     fmt = "%Y-%m-%dT%H:%M:%SZ"
     last_run = LastRun()
     last_run_utc = last_run.get_last_run()
     now_utc = datetime.utcnow()
-    api = get_squareapi_transaction_api()
-    location = get_location()
+
     print ("Connecting to live SquareAPI")
     print ("Using UTC times begin_time {} and end_time {} to query api.list_payments".format(last_run_utc.strftime(fmt), now_utc.strftime(fmt)))
+
     try:
         api_response = api.list_payments(location_id=location, begin_time=last_run_utc.strftime(fmt) , end_time=now_utc.strftime(fmt))
+        last_run.last_run = now_utc
+        db.session.commit()
         #print (api_response)
         return api_response
     except ApiException as e:
