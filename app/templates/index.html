@@ -20,6 +20,12 @@ Active Order #{{ active_order.order_id }}
         {% endfor %}
 </table>
 
+  <form method="POST" action="/completepost">
+    <input type="hidden" value="{{active_order.payment_id}}" name="payment_id">
+    <input type="hidden" value="{{active_order.part}}" name="part_num">
+    <input type="submit" value="Update">
+  </form>
+
 <br><br>
 Preview Order #{{ preview_order.order_id }}
 <table>
@@ -38,6 +44,7 @@ Next Queue ({{ next_queue|length }})
 <li>{{ next }}</li>
 {% endfor  %}
 </ul>
+
 
     </body>
 </html>

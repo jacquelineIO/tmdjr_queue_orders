@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from app import app
 from app.src.query_payments import get_list_payments
 from app.src.process_payments import process_payments_response
@@ -34,4 +34,12 @@ def index():
 @app.route("/complete/<payment_id>/<part_num>/")
 def complete(payment_id, part_num):
     complete_order(payment_id, part_num)
+    return redirect(url_for('index'))
+
+@app.route("/completepost", methods=["POST"])
+def completepost():
+    if request.form:
+        payment_id = request.form.get("payment_id")
+        part_num = request.form.get("part_num")
+        complete_order(payment_id, part_num)
     return redirect(url_for('index'))
