@@ -96,5 +96,6 @@ add to .flaskenv
 FLASK_APP=queue_orders.py
 ```
 Run the app
+```
 flask run
 ```    
