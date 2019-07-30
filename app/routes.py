@@ -11,19 +11,8 @@ def index():
     payment_responses = get_list_payments()
     #print(payment_responses[0])
     process_payments_response(payment_responses)
-    orders = get_orders()
-
-    # Setup data for template
-    next_queue = []
-    active_order = None
-    preview_order = None
-    if orders.count() > 0:
-        active_order = orders[0]
-    if orders.count() > 1:
-        preview_order = orders[1]
-        for i, order in enumerate(orders):
-            if i != 0:
-                next_queue.append(order.order_id)
+    
+    # put your code here!!!!!!!!
 
     print(active_order)
     print(preview_order)
