@@ -77,6 +77,24 @@ Error: Could not locate a Flask application. You did not provide the "FLASK_APP"
 This means that you did not set up the `.flaskenv` described above
 
 ### Run on windows to get access to python via git bash
+
+Windows > Git Bash
 ```
+cd /c/Users/cedlab/dev
+git clone https://github.com/jacquelineIO/tmdjr_queue_orders.git
 alias python='winpty /c/Users/cedlab/AppData/Local/Programs/Python/Python37/python.exe'
+cd ~/dev/tmdjr_queue_orders
+python -m venv env
+source env/Scripts/activate
+pip install -r requirements.txt
+python -m install --upgrade pip
+cd app
+vim .flaskenv
+```
+add to .flaskenv
+```
+FLASK_APP=queue_orders.py
+```
+Run the app
+flask run
 ```    
