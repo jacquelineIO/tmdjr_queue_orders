@@ -7,11 +7,5 @@ def get_orders():
     return orders
 
 def complete_order(payment_id, part_num):
-    order_to_complete = Order.query.filter_by(payment_id=payment_id, part=part_num)
-    if order_to_complete.count() > 0:
-        order_to_complete[0].completed = True
-        print("Order {} marked completed {}".format(order_to_complete[0].order_id, order_to_complete[0].part))
 
-    db.session.commit()
-    db.session.flush()
 
