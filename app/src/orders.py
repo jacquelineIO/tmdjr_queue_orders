@@ -8,6 +8,9 @@ def get_orders():
     return orders
 
 def complete_order(payment_id, part_num):
+    #Order.query.filter_by(payment_id=payment_id, part=part_num).update({"completed":True})
     order_to_complete = Order.query.filter_by(payment_id=payment_id, part=part_num)
     order_to_complete.completed = True
     db.session.commit()
+    db.session.flush()
+

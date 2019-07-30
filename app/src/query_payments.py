@@ -1,3 +1,14 @@
+"""
+This function/component of the application should query the Square API function list_payments
+periodically and upon loading the main queue URL. The complete button will trigger a refresh
+of the orders queue.
+
+Upon start of the application, the component should query all order from the beginning of the
+day until the current time. On the next call to this function the begin_time should be the last
+time the Square API will queried and the end_time should be the now current time.
+
+This function should return the list of payments retrieved from the Square API function list_payments.
+"""
 from app import app, db
 from app.models import LastRun, clear_orders_table
 from app.queue_orders import get_squareapi_transaction_api, get_location
