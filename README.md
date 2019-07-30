@@ -76,3 +76,7 @@ Error: Could not locate a Flask application. You did not provide the "FLASK_APP"
 ```
 This means that you did not set up the `.flaskenv` described above
 
+### Run on windows to get access to python via git bash
+```
+alias python='winpty /c/Users/cedlab/AppData/Local/Programs/Python/Python37/python.exe'
+```    
