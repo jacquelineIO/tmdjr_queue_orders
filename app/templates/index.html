@@ -1,50 +1,124 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>Welcome to TMD Jr Orders</title>
-        {% endif %}
-    </head>
-    <body>
-        <h1>That's My Dog Jr Orders</h1>
-
-<br><br>
-Active Order #{{ active_order.order_id }}
-<table>
-        {% for item in active_order.itemizations %}
- <tr>
-  <td>{{ item.name }}{% for mod in active_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
-  <td>Qty:{{ item.quantity }}</td>
- </tr>
-        {% endfor %}
-</table>
-
-  <form method="POST" action="/completepost">
-    <input type="hidden" value="{{active_order.payment_id}}" name="payment_id">
-    <input type="hidden" value="{{active_order.part}}" name="part_num">
-    <input type="submit" value="Complete">
-  </form>
-
-<br><br>
-Preview Order #{{ preview_order.order_id }}
-<table>
-        {% for item in preview_order.itemizations %}
- <tr>
-  <td>{{ item.name }}{% for mod in preview_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
-  <td>Qty:{{ item.quantity }}</td>
- </tr>
-        {% endfor %}
-</table>
-
-<br><br>
-Next Queue ({{ next_queue|length }})
-<ul>
-{% for next in next_queue %}
-<li>{{ next }}</li>
-{% endfor  %}
-</ul>
+{% extends 'bootstrap/base.html' %}
 
 
-    </body>
-</html>
+{% block title %}
+    That's My Dog Jr Orders
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="/static/css/site.css">
+{% endblock %}
+
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}
+
+        <div class="row">
+          <h1>That's My Dog Jr Orders</h1>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <ul class="list-group">
+            <li class="list-group-item"><h2><b>Next ({{ next_queue|length }})</b></h2></li>
+            {% for next in next_queue %}
+              <li class="list-group-item">{{ next }}</li>
+            {% endfor  %}
+            </ul>
+          </div><!-- /col-3 -->
+          <div class="col">
+            <h2>Preview</h2>
+            {%if preview_order %} 
+             <h3>Order #{{ preview_order.order_id }}</h3>
+             <p><b>Part {{ preview_order.part }}/{{ preview_order.total_parts }}</b></p>
+            {% else %}
+            <h3>Order #</h3>
+            <p><b>Part #/#</b></p>
+            {% endif %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Qty</th>
+                </tr>
+              </thead>
+              {%if preview_order %} 
+              <tbody>
+                  {% for item in preview_order.itemizations %}
+                  <tr>
+                      <th scope="row">{{ loop.index }}</th>
+                      <td>{{ item.name }}
+                        {% for mod in preview_order.modifers %}
+                        <p><b>{{ mod }}</b>
+                        {% endfor %}
+                        {% if item.notes %}
+                        </p><b>{{ item.notes }}</b></p>
+                        {% endif %}
+                      </td>
+                      <td>{{ item.quantity }}</td>
+                  </tr> 
+                  {% endfor %}         
+              </tbody>
+              {% endif %}
+            </table>
+          </div><!--/col-->
+          <div class="col">
+              <h2>Active</h2>
+              {%if active_order %} 
+               <h3>Order #{{ active_order.order_id }}</h3>
+               <p><b>Part {{ active_order.part }}/{{ active_order.total_parts }}</b></p>
+              {% else %}
+              <h3>Order #</h3>
+              <p><b>Part #/#</b></p>
+              {% endif %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Qty</th>
+                  </tr>
+                </thead>
+                {%if active_order %} 
+                <tbody>
+                    {% for item in active_order.itemizations %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ item.name }}
+                          {% for mod in active_order.modifers %}
+                          <p><b>{{ mod }}</b>
+                          {% endfor %}
+                          {% if item.notes %}
+                          </p><b>{{ item.notes }}</b></p>
+                          {% endif %}
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                    </tr> 
+                    {% endfor %}         
+                </tbody>
+                {% endif %}
+              </table>
+          </div><!-- /col -->
+        </div><!-- /div=row -->
+        <div class="row">
+            <div class="col-md-2">
+            <h3>Timer</h3>
+              <p><span id="minutes"></span>:<span id="seconds"></span></p>
+        
+            <button class="button" id="completeBtn">Complete</button>
+            </div><!-- /col -->
+        </div><!-- /div=row -->     
+        {% endblock %}
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script src="/static/js/site.js"></script>
+{% endblock %}
