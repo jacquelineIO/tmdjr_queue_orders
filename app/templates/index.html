@@ -23,7 +23,7 @@ Active Order #{{ active_order.order_id }}
   <form method="POST" action="/completepost">
     <input type="hidden" value="{{active_order.payment_id}}" name="payment_id">
     <input type="hidden" value="{{active_order.part}}" name="part_num">
-    <input type="submit" value="Update">
+    <input type="submit" value="Complete">
   </form>
 
 <br><br>
