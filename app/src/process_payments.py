@@ -32,5 +32,10 @@ def process_payments_response(payments_response):
 
         order.itemizations = order_items
         order.order_id = order.payment_id[:4]
-        db.session.add(order)
-    db.session.commit()
+        try:
+            db.session.add(order)
+            db.session.commit()
+        except IntegrityError as e:
+            db.session.rollback()
+            print("Except caught while commiting order to database {}".format(e))
+            print("Failed to add order {}".format(order))

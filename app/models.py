@@ -11,11 +11,11 @@ def clear_orders_table():
     except:
         db.session.rollback()
 
-def has_run_today_central(last_run, today_central):
-    last_run_central = last_run.astimezone(timezone('UTC'))
+def has_run_today_central(last_run_utc, today_central):
+    last_run_central = last_run_utc.astimezone(timezone('US/Central'))
  
-    if last_run_central.year == today_central.year and last_run_utc.month == today_central.month and last_run_central.day == today_central.day:
-            return true
+    if last_run_central.year == today_central.year and last_run_central.month == today_central.month and last_run_central.day == today_central.day:
+            return True
     else:
         if last_run_central.year < today_central.year:
             clear_orders_table()
@@ -23,7 +23,7 @@ def has_run_today_central(last_run, today_central):
             clear_orders_table()
         elif last_run_central.year == today_central.year and last_run_central.month == today_central.month and last_run_central.day < today_cental.day:
             clear_orders_table()
-        return false
+        return False
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,6 +65,17 @@ class LastRun(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_run = db.Column(db.DateTime, nullable=False)
 
+    def save_last_run(self, run_time_utc):
+        last_run_utc = self.query.all()
+        last_run = None
+        if len(last_run_utc) == 0:
+            last_run = LastRun(last_run=run_time_utc) 
+            db.session.add(last_run)
+        else:
+            last_run = last_run_utc[0]
+            last_run.last_run = run_time_utc
+        db.session.commit()
+
     def get_last_run(self):
         """Fetches rows from a Bigtable.
 
@@ -103,7 +114,7 @@ class LastRun(db.Model):
         last_run_utc = self.query.all()
         if len(last_run_utc) == 0:
             return today_utc
-        elif has_run_today_central(last_run_utc, today_central):
+        elif has_run_today_central(last_run_utc[0].last_run, today_central):
             return last_run_utc[0].last_run
         else:
             return today_utc

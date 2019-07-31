@@ -3,14 +3,28 @@ from app import app
 from app.src.query_payments import get_list_payments
 from app.src.process_payments import process_payments_response
 from app.src.orders import get_orders, complete_order
+from .models import clear_orders_table
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    payment_responses = get_list_payments()
-    #print(payment_responses[0])
-    process_payments_response(payment_responses)
+    orders = None
+    if app.config['CONNECT_SQUAREAPI'] == False:
+        orders = get_orders()
+
+    # Not doing any special for use of USE_CANNED_TIMES_CONNECT_SQUAREAPI
+    # therefore on multiple loads when using canned times there will
+    # be failures
+
+    if app.config['CONNECT_SQUAREAPI'] == False and orders.count() == 0:
+        clear_orders_table()
+        payment_responses = get_list_payments()
+        process_payments_response(payment_responses)
+    elif app.config['CONNECT_SQUAREAPI'] == True:
+        payment_responses = get_list_payments()
+        process_payments_response(payment_responses)
+
     orders = get_orders()
 
     # Setup data for template
