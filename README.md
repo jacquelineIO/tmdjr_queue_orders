@@ -39,6 +39,10 @@ flask db migrate
 flask db upgrade
 ```
 
+#### Issue with Flask Migration
+If you run into an issue with the migration remove the entire migrations folder
+and start over with the above commands.
+
 ### Get copy of data dumps to run application in sandbox
 Get a copy of the data archive from [Google Drive](https://drive.google.com/drive/u/1/folders/1nAblU72qlTKgcTMgJ-00r5Zy8aVf8Ffc)
 Place file `data_files.tgz` in the directory tmdjr_queue_orders/app/data
@@ -87,7 +91,7 @@ cd ~/dev/tmdjr_queue_orders
 python -m venv env
 source env/Scripts/activate
 pip install -r requirements.txt
-python -m install --upgrade pip
+python -m pip install --upgrade pip
 cd app
 vim .flaskenv
 ```
