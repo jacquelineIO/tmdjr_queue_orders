@@ -25,25 +25,12 @@ def get_list_payments():
         return get_list_payments_test_data()
 
 def get_list_payments_square_api():
-    api = get_squareapi_transaction_api()
-    location = get_location()
-
-    fmt = "%Y-%m-%dT%H:%M:%SZ"
-    last_run = LastRun()
-    last_run_utc = last_run.get_last_run()
-    now_utc = datetime.utcnow()
+    # ADD YOUR CODE HERE
 
     print ("Connecting to live SquareAPI")
     print ("Using UTC times begin_time {} and end_time {} to query api.list_payments".format(last_run_utc.strftime(fmt), now_utc.strftime(fmt)))
 
-    try:
-        api_response = api.list_payments(location_id=location, begin_time=last_run_utc.strftime(fmt) , end_time=now_utc.strftime(fmt))
-        last_run.save_last_run(now_utc)
-        #print (api_response)
-        return api_response
-    except ApiException as e:
-        print ('Exception when calling TransactionsApi->list_transactions: %s\n' % e)
-        return []
+    # ADD YOUR CODE HERE
 
 def get_list_payments_square_api_canned_times():
     # Central Times
