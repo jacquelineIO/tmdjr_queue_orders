@@ -47,8 +47,6 @@ def index():
 
 @app.route("/complete/<payment_id>/<part_num>/")
 def complete(payment_id, part_num):
-    complete_order(payment_id, part_num)
-    return redirect(url_for('index'))
 
 @app.route("/completepost", methods=["POST"])
 def completepost():
