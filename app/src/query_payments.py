@@ -9,6 +9,7 @@ time the Square API will queried and the end_time should be the now current time
 
 This function should return the list of payments retrieved from the Square API function list_payments.
 """
+from squareconnect.rest import ApiException
 from app import app
 from app.models import LastRun, clear_orders_table
 from app.queue_orders import get_squareapi_transaction_api, get_location

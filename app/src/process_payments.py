@@ -1,3 +1,4 @@
+# config:utf-8
 """
 This function/component of the application should parse the input (list of payments from call to Square API 
 function list_payments) and store the needed fields of information into a new Orders object and append 

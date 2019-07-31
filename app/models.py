@@ -21,7 +21,7 @@ def has_run_today_central(last_run_utc, today_central):
             clear_orders_table()
         elif last_run_central.year == today_central.year and last_run_central.month < today_central.month:
             clear_orders_table()
-        elif last_run_central.year == today_central.year and last_run_central.month == today_central.month and last_run_central.day < today_cental.day:
+        elif last_run_central.year == today_central.year and last_run_central.month == today_central.month and last_run_central.day < today_central.day:
             clear_orders_table()
         return False
 
