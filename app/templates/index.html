@@ -1,50 +1,179 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>Welcome to TMD Jr Orders</title>
-        {% endif %}
-    </head>
-    <body>
-        <h1>That's My Dog Jr Orders</h1>
+<!doctype html>
+<html lang="en">
 
-<br><br>
-Active Order #{{ active_order.order_id }}
-<table>
-        {% for item in active_order.itemizations %}
- <tr>
-  <td>{{ item.name }}{% for mod in active_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
-  <td>Qty:{{ item.quantity }}</td>
- </tr>
-        {% endfor %}
-</table>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <form method="POST" action="/completepost">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+   {% if title %}
+   <title>{{ title }}</title>
+   {% else %}
+   <title>Welcome to TMD Jr Orders</title>
+   {% endif %}
+</head>
+
+<body>
+<div class="container">
+   <h1>That's My Dog Jr Orders</h1>
+   <div class="container">
+      <div class="row">
+         <div class="col-3">
+            <ul class="list-group">
+               <li class="list-group-item">
+                  <h2><b>Next Orders(s): ({{ next_queue|length }})</b></h2>
+               </li>
+                  {% for next in next_queue %}
+                  <li class="list-group-item">{{ next }}</li>
+                  {% endfor %}
+            </ul>
+         </div><!-- /col-3 -->
+          <div class="col">
+            <h2>Preview</h2>
+            {%if preview_order %} 
+             <h3>Order #{{ preview_order.order_id }}</h3>
+             <p><b>Part {{ preview_order.part }}/{{ preview_order.total_parts }}</b></p>
+            {% else %}
+            <h3>Order #</h3>
+            <p><b>Part #/#</b></p>
+            {% endif %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Qty</th>
+                </tr>
+              </thead>
+              {%if preview_order %} 
+              <tbody>
+                  {% for item in preview_order.itemizations %}
+                  <tr>
+                      <th scope="row">{{ loop.index }}</th>
+                      <td>{{ item.name }}
+                        {% for mod in preview_order.modifers %}
+                        <p><b>{{ mod }}</b>
+                        {% endfor %}
+                        {% if item.notes %}
+                        </p><b>{{ item.notes }}</b></p>
+                        {% endif %}
+                      </td>
+                      <td>{{ item.quantity }}</td>
+                  </tr> 
+                  {% endfor %}         
+              </tbody>
+              {% endif %}
+            </table>
+          </div><!--/col-->
+
+          <div class="col">
+              <h2>Active</h2>
+              {%if active_order %} 
+               <h3>Order #{{ active_order.order_id }}</h3>
+               <p><b>Part {{ active_order.part }}/{{ active_order.total_parts }}</b></p>
+              {% else %}
+              <h3>Order #</h3>
+              <p><b>Part #/#</b></p>
+              {% endif %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Qty</th>
+                  </tr>
+                </thead>
+                {%if active_order %} 
+                <tbody>
+                    {% for item in active_order.itemizations %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ item.name }}
+                          {% for mod in active_order.modifers %}
+                          <p><b>{{ mod }}</b>
+                          {% endfor %}
+                          {% if item.notes %}
+                          </p><b>{{ item.notes }}</b></p>
+                          {% endif %}
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                    </tr> 
+                    {% endfor %}         
+                </tbody>
+                {% endif %}
+              </table>
+          </div><!-- /col -->
+
+        </div><!-- /div=row -->
+   <div class="row">
+      <div class="col-md-2">
+
+         <h3>Timer</h3>
+         <p><span id="minutes"></span>:<span id="seconds"></span></p>
+
+         
+		 
+		 	    <form name="completeorderform" method="POST" action="/completepost">
     <input type="hidden" value="{{active_order.payment_id}}" name="payment_id">
     <input type="hidden" value="{{active_order.part}}" name="part_num">
-    <input type="submit" value="Complete">
+
+	<button class="button" id="completeBtn">Complete</button>
   </form>
+		 
+         <script>
+            var minutesLabel = document.getElementById("minutes");
+            var secondsLabel = document.getElementById("seconds");
+            var totalSeconds = 0;
 
-<br><br>
-Preview Order #{{ preview_order.order_id }}
-<table>
-        {% for item in preview_order.itemizations %}
- <tr>
-  <td>{{ item.name }}{% for mod in preview_order.modifers %}<br>{{ mod }}{% endfor %}<br>{% if item.notes %}{{ item.notes }}{% endif %}</td>
-  <td>Qty:{{ item.quantity }}</td>
- </tr>
-        {% endfor %}
-</table>
+            var timer = setInterval(setTime, 1000);
 
-<br><br>
-Next Queue ({{ next_queue|length }})
-<ul>
-{% for next in next_queue %}
-<li>{{ next }}</li>
-{% endfor  %}
-</ul>
+            function setTime() {
+               ++totalSeconds;
+               secondsLabel.innerHTML = pad(totalSeconds % 60);
+               minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
 
+            }
 
-    </body>
+            function pad(val) {
+               var valString = val + "";
+               if (valString.length < 2) {
+                  return "0" + valString;
+               } else {
+                  return valString;
+               }
+            }
+
+            var completeBtn = document.getElementById("completeBtn");
+
+            completeBtn.onclick = function() {
+               clearInterval(timer);
+               totalSeconds = 0
+               setInterval(setTime, 1000);
+			   //document.forms["completeorderform"].submit();
+			   docuement.completeorderform.submit()
+            };
+         </script>
+
+      </div><!-- /col -->
+   </div><!-- /div=row --> 
+</div><!-- /container -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/static/js/site.js"></script>
+-->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.js"></script>
+</body>
+
 </html>
