@@ -57,7 +57,7 @@
                   <tr>
                       <th scope="row">{{ loop.index }}</th>
                       <td>{{ item.name }}
-                        {% for mod in preview_order.modifers %}
+                        {% for mod in item.modifiers %}
                         <p><b>{{ mod }}</b>
                         {% endfor %}
                         {% if item.notes %}
@@ -89,13 +89,13 @@
                     <th scope="col">Qty</th>
                   </tr>
                 </thead>
-                {%if active_order %} 
+                {%if active_order %}
                 <tbody>
                     {% for item in active_order.itemizations %}
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ item.name }}
-                          {% for mod in active_order.modifers %}
+                          {% for mod in item.modifiers %}
                           <p><b>{{ mod }}</b>
                           {% endfor %}
                           {% if item.notes %}
@@ -104,7 +104,7 @@
                         </td>
                         <td>{{ item.quantity }}</td>
                     </tr> 
-                    {% endfor %}         
+                    {% endfor %}
                 </tbody>
                 {% endif %}
               </table>

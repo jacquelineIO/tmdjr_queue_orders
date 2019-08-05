@@ -22,6 +22,7 @@ data/*.dump
 app/data/text_jul25.dump
 app/data/text_jul26.dump
 app/data/text_jul27.dump
+app/data/text_jul31.dump
 app/data/data_files.tgz
 
 # Coverage reports
