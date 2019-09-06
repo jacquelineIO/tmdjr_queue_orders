@@ -49,7 +49,7 @@ class OrderItem(db.Model):
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_created_at = db.Column(db.DateTime, nullable=False)
-    payment_id =  db.Column(db.String(128), index=True, unique=True)
+    payment_id =  db.Column(db.String(128), index=False, unique=False)
     order_id = db.Column(db.String(10), nullable=False)
     itemizations = db.relationship('OrderItem', backref='order', lazy=True)
     completed = db.Column(db.Boolean, default=False, nullable=False)
