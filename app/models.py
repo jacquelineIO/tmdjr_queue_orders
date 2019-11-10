@@ -57,7 +57,7 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, default=1)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'),
         nullable=False)
-    _modifiers = db.Column(db.String, default="")
+    _modifiers = db.Column(db.String(1000), default="")
     @property
     def modifiers(self):
         return [x for x in self._modifiers.split(';')]
